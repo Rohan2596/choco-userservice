@@ -1,5 +1,7 @@
 package com.spatalabz.choco.userservice.controller;
 
+import com.google.gson.Gson;
+import com.spatalabz.choco.userservice.dto.AddCustomer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,20 +20,26 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class CustomerControllerTest {
 
      private  CustomerController customerController;
+     public AddCustomer addCustomer;
+
+
      @Autowired
      private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
         this.customerController=new CustomerController();
+        this.addCustomer=new AddCustomer("Rohan2596","Rohan","Kadam","7894561230");
+
     }
 
     @Test
     void givenValidCustomer_whenAdded_shouldReturnValidResponse() throws Exception {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
         Assertions.assertEquals("User Added.",mvcResult.getResponse().getContentAsString());
 
     }
+
 }

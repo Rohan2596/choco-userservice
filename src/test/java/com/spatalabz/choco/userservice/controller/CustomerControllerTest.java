@@ -128,4 +128,52 @@ public class CustomerControllerTest {
 
     }
 
+    //LastName
+    @Test
+    void givenInValidCustomer_LastName_null_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.lastName=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Last Name Length must between 3 to 10 characters!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_LastName_empty_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.lastName="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_LastName_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.lastName="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_LastName_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.lastName="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_LastName_pattern3_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.lastName="ro";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
+
+    }
+
 }

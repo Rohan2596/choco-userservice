@@ -11,8 +11,6 @@ import javax.validation.constraints.*;
 public class AddCustomer {
 
 
-    @NotBlank(message = "Email Address Cannot be empty/blank/null!")
-    @NotEmpty(message = "Email Address Cannot be empty/blank/null!")
     @NotNull(message = "Email Address Cannot be empty/blank/null!")
     @Email(message = "Please Enter Valid Email Address!",
             regexp = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+[a-zA-Z0-9.-]*+$")

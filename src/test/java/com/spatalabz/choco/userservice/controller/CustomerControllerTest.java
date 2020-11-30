@@ -176,4 +176,52 @@ public class CustomerControllerTest {
 
     }
 
+    //password
+    @Test
+    void givenInValidCustomer_password_null_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.password=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_password_empty_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.password="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_password_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.password="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_password_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.password="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_password_pattern3_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.password="ro";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+
 }

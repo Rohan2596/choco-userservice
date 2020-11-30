@@ -42,15 +42,7 @@ public class CustomerControllerTest {
 
     }
 
-    @Test
-    void givenInValidCustomer_EmailAddress_blank_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.emailAddress="";
-        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
-        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
 
-    }
     @Test
     void givenInValidCustomer_EmailAddress_null_whenAdded_shouldReturnValidResponse() throws Exception {
         this.addCustomer.emailAddress=null;
@@ -62,7 +54,7 @@ public class CustomerControllerTest {
     }
     @Test
     void givenInValidCustomer_EmailAddress_empty_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.emailAddress=" ";
+        this.addCustomer.emailAddress="";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.addCustomer))).andReturn();
@@ -86,6 +78,53 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.addCustomer))).andReturn();
         Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+    //First Name Adding User
+    @Test
+    void givenInValidCustomer_FirstName_null_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.firstName=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("First Name Length must between 3 to 10 characters!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_FirstName_empty_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.firstName="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_FirstName_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.firstName="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_FirstName_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.firstName="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_FirstName_pattern3_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.firstName="ro";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
 
     }
 

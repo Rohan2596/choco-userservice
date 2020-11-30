@@ -29,7 +29,7 @@ public class CustomerControllerTest {
     @BeforeEach
     void setUp() {
         this.customerController=new CustomerController();
-        this.addCustomer=new AddCustomer("Rohan2596","Rohan","Kadam","7894561230");
+        this.addCustomer=new AddCustomer("rohankadam965@gmail.com","Rohan","Kadam","7894561230");
 
     }
 
@@ -39,6 +39,53 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.addCustomer))).andReturn();
         Assertions.assertEquals("User Added.",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_EmailAddress_blank_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.emailAddress="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_EmailAddress_null_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.emailAddress=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Email Address Cannot be empty/blank/null!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_EmailAddress_empty_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.emailAddress=" ";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_EmailAddress_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.emailAddress="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_EmailAddress_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomer.emailAddress="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomer))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
 
     }
 

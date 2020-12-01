@@ -462,4 +462,17 @@ public class CustomerControllerTest {
 
     }
 
+    //Get User Details
+
+    @Test
+    void givenInValidCustomer_whenUpdated_shouldReturnValidResponse() throws Exception {
+
+        MvcResult mvcResult=this.mockMvc.perform(get("/choco/customer/user/dsfsdfds")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                ).andReturn();
+        Assertions.assertEquals("Getting Customer Details",mvcResult.getResponse().getContentAsString());
+
+    }
+
+
 }

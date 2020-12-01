@@ -48,4 +48,11 @@ public class CustomerController {
         }
         return "Password Updated  Successfully.";
     }
+
+    @GetMapping("/{token}")
+    public String getCustomerDetails(@PathVariable String token){
+        System.out.println(token);
+        return "Getting Customer Details";
+    }
+
 }

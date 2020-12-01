@@ -45,4 +45,9 @@ public class CustomerServiceTest  {
     public void givenValidCustomerResetPassword_whenUpdated_shouldReturnValidResponse(){
         this.customerService.resetPassword(this.resetPasswordDto);
     }
+
+    @Test
+    public void givenValidToken_whenGetting_shouldReturnValidResponse(){
+        this.customerService.customerDetails("token");
+    }
 }

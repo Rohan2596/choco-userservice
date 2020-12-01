@@ -26,5 +26,8 @@ public class CustomerService {
         return "Password Updated Succesfully.";
     }
 
+    public String customerDetails(String token){
+        return "Customer Details";
+    }
 
 }

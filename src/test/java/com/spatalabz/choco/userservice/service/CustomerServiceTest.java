@@ -3,6 +3,7 @@ package com.spatalabz.choco.userservice.service;
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
+import com.spatalabz.choco.userservice.model.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,10 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class CustomerServiceTest  {
 
+
+
     private CustomerService customerService;
+    //Dtos
     private AddCustomerDto addCustomerDto;
     private AuthCustomerDto authCustomerDto;
     private ResetPasswordDto resetPasswordDto;
+    //Models
+    private Customer customer;
 
     @BeforeEach
     void setUp() {
@@ -21,7 +27,7 @@ public class CustomerServiceTest  {
         this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230","SUPPLIER");
         this.authCustomerDto=new AuthCustomerDto("rohankadam965@gmail.com","7894561230");
         this.resetPasswordDto=new ResetPasswordDto("7894561230","78945612we");
-
+         this.customer=new Customer(this.addCustomerDto);
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.spatalabz.choco.userservice.controller;
 import com.google.gson.Gson;
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
+import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ public class CustomerControllerTest {
      public   CustomerController customerController;
      public AddCustomerDto addCustomerDto;
      public AuthCustomerDto authCustomerDto;
+     public ResetPasswordDto resetPasswordDto;
 
 
 
@@ -34,6 +36,7 @@ public class CustomerControllerTest {
         this.customerController=new CustomerController();
         this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230");
         this.authCustomerDto=new AuthCustomerDto("rohankadam965@gmail.com","789456123q");
+        this.resetPasswordDto=new ResetPasswordDto("789456123q","789456123q");
     }
 
     @Test
@@ -276,6 +279,53 @@ public class CustomerControllerTest {
 
     }
 
+    //password
+    @Test
+    void givenInValidCustomer_password_null_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.password=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_password_empty_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.password="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_password_pattern1_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.password="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_password_pattern2_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.password="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_password_pattern3_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.password="ro";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
 
     //Password Forgotten
 
@@ -300,5 +350,116 @@ public class CustomerControllerTest {
     }
 
 
+
+
+    //reset password
+
+    @Test
+    void givenValidCustomer_reset_password_whenUpdated_shouldReturnValidResponse() throws Exception {
+
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Password Updated  Successfully.",mvcResult.getResponse().getContentAsString());
+
+    }
+
+
+    //password
+    @Test
+    void givenInValidCustomer_reset_password_null_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.password=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_reset_password_empty_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.password="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_reset_password_pattern1_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.password="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_reset_password_pattern2_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.password="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_reset_password_pattern3_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.password="ro";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    //confirm Password
+
+    @Test
+    void givenInValidCustomer_reset_confirm_password_null_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.confirm_password=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_reset_confirm_password_empty_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.confirm_password="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_reset_confirm_password_pattern1_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.confirm_password="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_reset_confirm_password_pattern2_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.confirm_password="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_reset_confirm_password_pattern3_whenUpdated_shouldReturnValidResponse() throws Exception {
+        this.resetPasswordDto.confirm_password="ro";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+
+    }
 
 }

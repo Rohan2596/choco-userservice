@@ -2,6 +2,7 @@ package com.spatalabz.choco.userservice.controller;
 
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
+import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,5 +39,13 @@ public class CustomerController {
             return "Please Enter correct Email Address!";
         }
         return "Customer Password forgotten.";
+    }
+
+    @PostMapping("/reset")
+    public String resetPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return bindingResult.getAllErrors().get(0).getDefaultMessage();
+        }
+        return "Password Updated  Successfully.";
     }
 }

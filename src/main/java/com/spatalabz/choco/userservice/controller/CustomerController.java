@@ -3,12 +3,11 @@ package com.spatalabz.choco.userservice.controller;
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/choco/customer/user")
@@ -28,5 +27,16 @@ public class CustomerController {
             return bindingResult.getAllErrors().get(0).getDefaultMessage();
         }
         return "User Authenticated.";
+    }
+
+    @GetMapping("/forgot")
+    public String forgotPassword(@RequestParam String emailId){
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+[a-zA-Z0-9.-]*+$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(emailId);
+        boolean matchFound = matcher.find();
+        if(!matchFound) {
+            return "Please Enter correct Email Address!";
+        }
+        return "Customer Password forgotten.";
     }
 }

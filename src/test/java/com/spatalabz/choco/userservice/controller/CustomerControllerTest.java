@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
@@ -273,6 +275,30 @@ public class CustomerControllerTest {
         Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
 
     }
+
+
+    //Password Forgotten
+
+    @Test
+    void givenValidCustomerEmailId_whenForgotten_shouldReturnValidResponse() throws Exception {
+
+        MvcResult mvcResult=this.mockMvc.perform(get("/choco/customer/user/forgot")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("emailId","rohankadam965@gmail.com")).andReturn();
+        Assertions.assertEquals("Customer Password forgotten.",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomerEmailId_whenForgotten_shouldReturnValidResponse() throws Exception {
+
+        MvcResult mvcResult=this.mockMvc.perform(get("/choco/customer/user/forgot")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("emailId","rohankadam965gmail.com")).andReturn();
+        Assertions.assertEquals("Please Enter correct Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+
 
 
 }

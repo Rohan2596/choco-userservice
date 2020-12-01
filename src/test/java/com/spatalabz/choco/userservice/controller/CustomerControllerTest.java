@@ -1,7 +1,8 @@
 package com.spatalabz.choco.userservice.controller;
 
 import com.google.gson.Gson;
-import com.spatalabz.choco.userservice.dto.AddCustomer;
+import com.spatalabz.choco.userservice.dto.AddCustomerDto;
+import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 public class CustomerControllerTest {
 
-     private  CustomerController customerController;
-     public AddCustomer addCustomer;
+     public   CustomerController customerController;
+     public AddCustomerDto addCustomerDto;
+     public AuthCustomerDto authCustomerDto;
+
 
 
      @Autowired
@@ -27,101 +30,101 @@ public class CustomerControllerTest {
     @BeforeEach
     void setUp() {
         this.customerController=new CustomerController();
-        this.addCustomer=new AddCustomer("rohankadam965@gmail.com","Rohan","Kadam","7894561230");
-
+        this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230");
+        this.authCustomerDto=new AuthCustomerDto("rohankadam965@gmail.com","789456123q");
     }
 
     @Test
     void givenValidCustomer_whenAdded_shouldReturnValidResponse() throws Exception {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("User Added.",mvcResult.getResponse().getContentAsString());
 
     }
 
-
+//emailAddress
     @Test
     void givenInValidCustomer_EmailAddress_null_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.emailAddress=null;
+        this.addCustomerDto.emailAddress=null;
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Email Address Cannot be empty/blank/null!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_EmailAddress_empty_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.emailAddress="";
+        this.addCustomerDto.emailAddress="";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_EmailAddress_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.emailAddress="rohankadamasd.com";
+        this.addCustomerDto.emailAddress="rohankadamasd.com";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
 
     }
 
     @Test
     void givenInValidCustomer_EmailAddress_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.emailAddress="rohankada@masd";
+        this.addCustomerDto.emailAddress="rohankada@masd";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
 
     }
     //First Name Adding User
     @Test
     void givenInValidCustomer_FirstName_null_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.firstName=null;
+        this.addCustomerDto.firstName=null;
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("First Name Length must between 3 to 10 characters!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_FirstName_empty_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.firstName="";
+        this.addCustomerDto.firstName="";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_FirstName_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.firstName="rohankadamasd.com";
+        this.addCustomerDto.firstName="rohankadamasd.com";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
 
     }
 
     @Test
     void givenInValidCustomer_FirstName_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.firstName="rohankada@masd";
+        this.addCustomerDto.firstName="rohankada@masd";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_FirstName_pattern3_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.firstName="ro";
+        this.addCustomerDto.firstName="ro";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  First Name!",mvcResult.getResponse().getContentAsString());
 
     }
@@ -129,47 +132,47 @@ public class CustomerControllerTest {
     //LastName
     @Test
     void givenInValidCustomer_LastName_null_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.lastName=null;
+        this.addCustomerDto.lastName=null;
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Last Name Length must between 3 to 10 characters!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_LastName_empty_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.lastName="";
+        this.addCustomerDto.lastName="";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_LastName_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.lastName="rohankadamasd.com";
+        this.addCustomerDto.lastName="rohankadamasd.com";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
 
     }
 
     @Test
     void givenInValidCustomer_LastName_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.lastName="rohankada@masd";
+        this.addCustomerDto.lastName="rohankada@masd";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_LastName_pattern3_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.lastName="ro";
+        this.addCustomerDto.lastName="ro";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid Last Name!",mvcResult.getResponse().getContentAsString());
 
     }
@@ -177,49 +180,99 @@ public class CustomerControllerTest {
     //password
     @Test
     void givenInValidCustomer_password_null_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.password=null;
+        this.addCustomerDto.password=null;
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_password_empty_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.password="";
+        this.addCustomerDto.password="";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_password_pattern1_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.password="rohankadamasd.com";
+        this.addCustomerDto.password="rohankadamasd.com";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
 
     }
 
     @Test
     void givenInValidCustomer_password_pattern2_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.password="rohankada@masd";
+        this.addCustomerDto.password="rohankada@masd";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
 
     }
     @Test
     void givenInValidCustomer_password_pattern3_whenAdded_shouldReturnValidResponse() throws Exception {
-        this.addCustomer.password="ro";
+        this.addCustomerDto.password="ro";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.addCustomer))).andReturn();
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
 
     }
+
+    //Authenticating User or Login
+    @Test
+    void givenValidCustomer_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("User Authenticated.",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    //emailAddress
+    @Test
+    void givenInValidCustomer_EmailAddress_null_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.emailAddress=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Email Address Cannot be empty/blank/null!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_EmailAddress_empty_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.emailAddress="";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+    @Test
+    void givenInValidCustomer_EmailAddress_pattern1_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.emailAddress="rohankadamasd.com";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_EmailAddress_pattern2_whenAuthenticated_shouldReturnValidResponse() throws Exception {
+        this.authCustomerDto.emailAddress="rohankada@masd";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.authCustomerDto))).andReturn();
+        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+
+    }
+
 
 }

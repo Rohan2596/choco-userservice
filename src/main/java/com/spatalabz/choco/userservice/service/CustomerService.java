@@ -1,13 +1,13 @@
 package com.spatalabz.choco.userservice.service;
 
-import com.spatalabz.choco.userservice.dto.AddCustomer;
+import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService {
 
-    public String addingCustomer(AddCustomer addCustomer){
-        System.out.println(addCustomer);
+    public String addingCustomer(AddCustomerDto addCustomerDto){
+        System.out.println(addCustomerDto);
         return "Customer Added.";
     }
 }

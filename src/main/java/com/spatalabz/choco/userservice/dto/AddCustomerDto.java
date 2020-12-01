@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddCustomer {
+public class AddCustomerDto {
 
 
     @NotNull(message = "Email Address Cannot be empty/blank/null!")

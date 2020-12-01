@@ -18,7 +18,7 @@ public class CustomerServiceTest  {
     @BeforeEach
     void setUp() {
         this.customerService=new CustomerService();
-        this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230");
+        this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230","SUPPLIER");
         this.authCustomerDto=new AuthCustomerDto("rohankadam965@gmail.com","7894561230");
         this.resetPasswordDto=new ResetPasswordDto("7894561230","78945612we");
 

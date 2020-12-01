@@ -34,7 +34,7 @@ public class CustomerControllerTest {
     @BeforeEach
     void setUp() {
         this.customerController=new CustomerController();
-        this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230");
+        this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230","SUPPLIER");
         this.authCustomerDto=new AuthCustomerDto("rohankadam965@gmail.com","789456123q");
         this.resetPasswordDto=new ResetPasswordDto("789456123q","789456123q");
     }
@@ -229,6 +229,29 @@ public class CustomerControllerTest {
         Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
 
     }
+
+
+    //Customer Type
+    @Test
+    void givenInValidCustomer_CustomerType_null_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomerDto.customerType=null;
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
+        Assertions.assertEquals("Customer Type can not be null!",mvcResult.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void givenInValidCustomer_CustomerType_whenAdded_shouldReturnValidResponse() throws Exception {
+        this.addCustomerDto.customerType="RES";
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new Gson().toJson(this.addCustomerDto))).andReturn();
+        Assertions.assertEquals("Customer Type is invalid!",mvcResult.getResponse().getContentAsString());
+
+    }
+
 
     //Authenticating User or Login
     @Test

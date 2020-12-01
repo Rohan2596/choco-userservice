@@ -32,14 +32,10 @@ public class AddCustomerDto {
             regexp = "^[a-zA-Z0-9]{6,10}$")
     public String password;
 
+    @NotNull(message = "Customer Type can not be null!")
+    @Pattern(message = "Customer Type is invalid!",
+            regexp = "^[a-zA-Z]{4,10}$")
+    public String customerType;
 
-    @Override
-    public String toString() {
-        return "AddCustomer{" +
-                "emailAddress='" + emailAddress + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
+
 }

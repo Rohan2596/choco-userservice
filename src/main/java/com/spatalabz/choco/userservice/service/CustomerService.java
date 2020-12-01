@@ -17,5 +17,9 @@ public class CustomerService {
         return "Customer Authenticated.";
     }
 
+    public String passwordForgotten(String emailId){
+        return "Password Forgotten.";
+    }
+
 
 }

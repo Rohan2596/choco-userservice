@@ -28,7 +28,13 @@ public class CustomerServiceTest  {
 
     }
 
+    @Test
     public void givenValidCustomer_whenAuthenticated_shouldReturnValidResponse(){
         this.customerService.authenticationCustomer(this.authCustomerDto);
+    }
+
+    @Test
+    public void givenValidCustomerEmailAddress_whenForgotten_shouldReturnValidResponse(){
+        this.customerService.passwordForgotten("rohanKadam965@gmail.com");
     }
 }

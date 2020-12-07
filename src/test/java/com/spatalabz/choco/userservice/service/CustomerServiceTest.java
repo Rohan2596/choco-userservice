@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -87,6 +88,15 @@ public class CustomerServiceTest {
 
     @Test
     public void givenValidToken_whenGetting_shouldReturnValidResponse(){
-        this.customerService.customerDetails("token");
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
+        Assertions.assertEquals("Customer Details",this.customerService.customerDetails("token"));
+    }
+
+    @Test
+    public void givenInValidToken_whenGetting_shouldReturnValidResponse(){
+
+        when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(null));
+        Assertions.assertEquals("Invalid Token!",this.customerService.customerDetails("token"));
     }
 }

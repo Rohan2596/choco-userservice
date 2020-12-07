@@ -8,6 +8,8 @@ import com.spatalabz.choco.userservice.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomerServiceImpl implements  CustomerService {
 
@@ -43,6 +45,11 @@ public class CustomerServiceImpl implements  CustomerService {
     }
 
     public String customerDetails(String token){
+        String customer_Id=token;
+        Optional<Customer> customerExist=customerRepository.findById(customer_Id);
+        if(!customerExist.isPresent()){
+            return "Invalid Token!";
+        }
         return "Customer Details";
     }
 

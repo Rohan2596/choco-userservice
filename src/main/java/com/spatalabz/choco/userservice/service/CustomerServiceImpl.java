@@ -37,11 +37,23 @@ public class CustomerServiceImpl implements  CustomerService {
     }
 
     public String passwordForgotten(String emailId){
-        return "Password Forgotten.";
+        boolean exist=customerRepository.findAllByEmailAddress(emailId);
+        if(!exist)
+            return "Customer doesn't Exists!";
+        return "Reset link is send to registered Email Address.";
     }
 
-    public String resetPassword(ResetPasswordDto resetPasswordDto){
-        return "Password Updated Succesfully.";
+    public String resetPassword(ResetPasswordDto resetPasswordDto,String token){
+        String customer_Id=token;
+        Optional<Customer> customerExist=customerRepository.findById(customer_Id);
+        if(!customerExist.isPresent()){
+            return "Invalid Token!";
+        }
+        if(resetPasswordDto.confirm_password!=resetPasswordDto.password){
+           return "Passwords doesn't matches each other.";
+        }
+        customerExist.get().setPassword(resetPasswordDto.password);
+        return "Password Updated Successfully.";
     }
 
     public String customerDetails(String token){

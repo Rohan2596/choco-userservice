@@ -9,6 +9,6 @@ public interface CustomerService {
     String addingCustomer(AddCustomerDto addCustomerDto);
     String authenticationCustomer(AuthCustomerDto authCustomerDto);
     String passwordForgotten(String emailId);
-    String resetPassword(ResetPasswordDto resetPasswordDto);
+    String resetPassword(ResetPasswordDto resetPasswordDto,String token);
     String customerDetails(String token);
 }

@@ -39,12 +39,14 @@ public class CustomerServiceTest {
     void setUp() {
         this.addCustomerDto =new AddCustomerDto("rohankadam965@gmail.com","Rohan","Kadam","7894561230","SUPPLIER");
         this.authCustomerDto=new AuthCustomerDto("rohankadam965@gmail.com","7894561230");
-        this.resetPasswordDto=new ResetPasswordDto("7894561230","78945612we");
+        this.resetPasswordDto=new ResetPasswordDto("78945612we","78945612we");
          this.customer=new Customer(this.addCustomerDto);
          this.customer.setId("dsfs");
 
     }
 
+
+    //adding customer
     @Test
     public  void givenValidCustomer_whenAdded_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
@@ -61,6 +63,7 @@ public class CustomerServiceTest {
 
     }
 
+    //login customer
     @Test
     public void givenValidCustomer_whenAuthenticated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
@@ -76,16 +79,49 @@ public class CustomerServiceTest {
     }
 
 
+    //email Address forgotten
     @Test
     public void givenValidCustomerEmailAddress_whenForgotten_shouldReturnValidResponse(){
-        this.customerService.passwordForgotten("rohanKadam965@gmail.com");
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findAllByEmailAddress(any())).thenReturn(true);
+        Assertions.assertEquals("Reset link is send to registered Email Address.",this.customerService.passwordForgotten(this.addCustomerDto.emailAddress));
+
     }
 
     @Test
-    public void givenValidCustomerResetPassword_whenUpdated_shouldReturnValidResponse(){
-        this.customerService.resetPassword(this.resetPasswordDto);
+    public void givenInValidCustomerEmailAddress_whenForgotten_shouldReturnValidResponse(){
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findAllByEmailAddress(any())).thenReturn(false);
+        Assertions.assertEquals("Customer doesn't Exists!",this.customerService.passwordForgotten(this.addCustomerDto.emailAddress));
+
     }
 
+    //reset password
+    @Test
+    public void givenValidCustomerResetPassword_whenUpdated_shouldReturnValidResponse(){
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
+        Assertions.assertEquals("Password Updated Successfully.",this.customerService.resetPassword(this.resetPasswordDto,"token"));
+
+    }
+    @Test
+    public void givenInValidCustomerResetPassword_whenUpdated_shouldReturnValidResponse(){
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(null));
+        Assertions.assertEquals("Invalid Token!",this.customerService.resetPassword(this.resetPasswordDto,"token"));
+
+    }
+    @Test
+    public void givenInValidCustomerResetPassword_DTO_whenUpdated_shouldReturnValidResponse(){
+        this.resetPasswordDto.confirm_password="78945612er";
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(customer));
+        Assertions.assertEquals("Passwords doesn't matches each other.",this.customerService.resetPassword(this.resetPasswordDto,"token"));
+
+    }
+
+
+    //customer details
     @Test
     public void givenValidToken_whenGetting_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);

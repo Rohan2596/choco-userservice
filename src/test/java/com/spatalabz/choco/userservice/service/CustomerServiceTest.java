@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -23,6 +22,9 @@ public class CustomerServiceTest {
 
     @Mock
     private CustomerRepository customerRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private CustomerServiceImpl customerService;
@@ -49,16 +51,19 @@ public class CustomerServiceTest {
     //adding customer
     @Test
     public  void givenValidCustomer_whenAdded_shouldReturnValidResponse(){
+        when(passwordEncoder.encode(any())).thenReturn("7894561230");
         when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findAllByEmailAddress(any())).thenReturn(false);
+        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(null));
         Assertions.assertEquals("Customer Added.",this.customerService.addingCustomer(this.addCustomerDto));
 
     }
 
     @Test
     public  void givenValidCustomerAlreadyExist_whenAdded_shouldReturnValidResponse(){
+
+        when(passwordEncoder.matches(any(),any())).thenReturn(true);
         when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findAllByEmailAddress(any())).thenReturn(true);
+        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
         Assertions.assertEquals("Customer Already Exists!",this.customerService.addingCustomer(this.addCustomerDto));
 
     }
@@ -67,14 +72,14 @@ public class CustomerServiceTest {
     @Test
     public void givenValidCustomer_whenAuthenticated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findAllByEmailAddress(any())).thenReturn(true);
+        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
         Assertions.assertEquals("Customer Authenticated.",this.customerService.authenticationCustomer(this.authCustomerDto));
     }
 
     @Test
     public void givenValidCustomerWrongEmail_whenAuthenticated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findAllByEmailAddress(any())).thenReturn(false);
+        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(null));
         Assertions.assertEquals("Customer doesn't Exists!",this.customerService.authenticationCustomer(this.authCustomerDto));
     }
 
@@ -83,7 +88,7 @@ public class CustomerServiceTest {
     @Test
     public void givenValidCustomerEmailAddress_whenForgotten_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findAllByEmailAddress(any())).thenReturn(true);
+        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
         Assertions.assertEquals("Reset link is send to registered Email Address.",this.customerService.passwordForgotten(this.addCustomerDto.emailAddress));
 
     }
@@ -91,7 +96,7 @@ public class CustomerServiceTest {
     @Test
     public void givenInValidCustomerEmailAddress_whenForgotten_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findAllByEmailAddress(any())).thenReturn(false);
+        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(null));
         Assertions.assertEquals("Customer doesn't Exists!",this.customerService.passwordForgotten(this.addCustomerDto.emailAddress));
 
     }

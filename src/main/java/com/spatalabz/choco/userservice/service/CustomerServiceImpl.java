@@ -6,6 +6,7 @@ import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import com.spatalabz.choco.userservice.model.Customer;
 import com.spatalabz.choco.userservice.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,27 +19,35 @@ public class CustomerServiceImpl implements  CustomerService {
     @Autowired
     private  CustomerRepository customerRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public String addingCustomer(AddCustomerDto addCustomerDto){
         this.customer=new Customer(addCustomerDto);
-        boolean exist=customerRepository.findAllByEmailAddress(addCustomerDto.emailAddress);
-        if(exist)
+        Optional<Customer> customerExist=customerRepository.findByEmailAddress(addCustomerDto.emailAddress);
+        if(customerExist.isPresent())
             return "Customer Already Exists!";
+        String pass=passwordEncoder.encode(this.customer.getPassword());
+        System.out.println(pass);
         customerRepository.save(this.customer);
         return "Customer Added.";
     }
 
     public String authenticationCustomer(AuthCustomerDto authCustomerDto){
-        boolean exist=customerRepository.findAllByEmailAddress(authCustomerDto.emailAddress);
-        if(!exist)
+        Optional<Customer> customerExist=customerRepository.findByEmailAddress(authCustomerDto.emailAddress);
+        if(!customerExist.isPresent())
             return "Customer doesn't Exists!";
+        if(passwordEncoder.matches(authCustomerDto.password,customerExist.get().getPassword())){
+            return "Password Incorrect!";
+        }
+
         return "Customer Authenticated.";
     }
 
     public String passwordForgotten(String emailId){
-        boolean exist=customerRepository.findAllByEmailAddress(emailId);
-        if(!exist)
+        Optional<Customer> customerExist=customerRepository.findByEmailAddress(emailId);
+        if(!customerExist.isPresent())
             return "Customer doesn't Exists!";
         return "Reset link is send to registered Email Address.";
     }

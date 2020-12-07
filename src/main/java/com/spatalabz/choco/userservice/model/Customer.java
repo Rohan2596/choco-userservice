@@ -2,11 +2,16 @@ package com.spatalabz.choco.userservice.model;
 
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 
 @Data
+@Document(collation = "customer")
 public class Customer {
 
+    @org.springframework.data.annotation.Id
     private String Id;
     private String firstName;
     private String lastName;

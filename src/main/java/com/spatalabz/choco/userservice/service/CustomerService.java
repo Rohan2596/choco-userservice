@@ -3,31 +3,12 @@ package com.spatalabz.choco.userservice.service;
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
-import org.springframework.stereotype.Service;
 
-@Service
-public class CustomerService {
+public interface CustomerService {
 
-    public String addingCustomer(AddCustomerDto addCustomerDto){
-        System.out.println(addCustomerDto);
-        return "Customer Added.";
-    }
-
-    public String authenticationCustomer(AuthCustomerDto authCustomerDto){
-        System.out.println(authCustomerDto);
-        return "Customer Authenticated.";
-    }
-
-    public String passwordForgotten(String emailId){
-        return "Password Forgotten.";
-    }
-
-    public String resetPassword(ResetPasswordDto resetPasswordDto){
-        return "Password Updated Succesfully.";
-    }
-
-    public String customerDetails(String token){
-        return "Customer Details";
-    }
-
+    String addingCustomer(AddCustomerDto addCustomerDto);
+    String authenticationCustomer(AuthCustomerDto authCustomerDto);
+    String passwordForgotten(String emailId);
+    String resetPassword(ResetPasswordDto resetPasswordDto);
+    String customerDetails(String token);
 }

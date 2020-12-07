@@ -20,6 +20,10 @@ public class CustomerServiceImpl implements  CustomerService {
 
     public String addingCustomer(AddCustomerDto addCustomerDto){
         this.customer=new Customer(addCustomerDto);
+        boolean exist=customerRepository.findAllByEmailAddress(addCustomerDto.emailAddress);
+        System.out.println(exist);
+        if(exist)
+            return "Customer Already Exists!";
         customerRepository.save(this.customer);
         return "Customer Added.";
     }

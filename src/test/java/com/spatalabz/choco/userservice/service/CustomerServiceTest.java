@@ -5,17 +5,19 @@ import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import com.spatalabz.choco.userservice.model.Customer;
 import com.spatalabz.choco.userservice.repository.CustomerRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class CustomerServiceImplTest {
+public class CustomerServiceTest {
 
 
     @Mock
@@ -45,7 +47,17 @@ public class CustomerServiceImplTest {
     @Test
     public  void givenValidCustomer_whenAdded_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
-        this.customerService.addingCustomer(this.addCustomerDto);
+        when(customerRepository.findAllByEmailAddress(any())).thenReturn(false);
+        Assertions.assertEquals("Customer Added.",this.customerService.addingCustomer(this.addCustomerDto));
+
+    }
+
+    @Test
+    public  void givenValidCustomerAlreadyExist_whenAdded_shouldReturnValidResponse(){
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findAllByEmailAddress(any())).thenReturn(true);
+        Assertions.assertEquals("Customer Already Exists!",this.customerService.addingCustomer(this.addCustomerDto));
+
     }
 
     @Test

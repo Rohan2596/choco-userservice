@@ -62,8 +62,18 @@ public class CustomerServiceTest {
 
     @Test
     public void givenValidCustomer_whenAuthenticated_shouldReturnValidResponse(){
-        this.customerService.authenticationCustomer(this.authCustomerDto);
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findAllByEmailAddress(any())).thenReturn(true);
+        Assertions.assertEquals("Customer Authenticated.",this.customerService.authenticationCustomer(this.authCustomerDto));
     }
+
+    @Test
+    public void givenValidCustomerWrongEmail_whenAuthenticated_shouldReturnValidResponse(){
+        when(customerRepository.save(any())).thenReturn(this.customer);
+        when(customerRepository.findAllByEmailAddress(any())).thenReturn(false);
+        Assertions.assertEquals("Customer doesn't Exists!",this.customerService.authenticationCustomer(this.authCustomerDto));
+    }
+
 
     @Test
     public void givenValidCustomerEmailAddress_whenForgotten_shouldReturnValidResponse(){

@@ -21,7 +21,6 @@ public class CustomerServiceImpl implements  CustomerService {
     public String addingCustomer(AddCustomerDto addCustomerDto){
         this.customer=new Customer(addCustomerDto);
         boolean exist=customerRepository.findAllByEmailAddress(addCustomerDto.emailAddress);
-        System.out.println(exist);
         if(exist)
             return "Customer Already Exists!";
         customerRepository.save(this.customer);
@@ -29,7 +28,9 @@ public class CustomerServiceImpl implements  CustomerService {
     }
 
     public String authenticationCustomer(AuthCustomerDto authCustomerDto){
-        System.out.println(authCustomerDto);
+        boolean exist=customerRepository.findAllByEmailAddress(authCustomerDto.emailAddress);
+        if(!exist)
+            return "Customer doesn't Exists!";
         return "Customer Authenticated.";
     }
 

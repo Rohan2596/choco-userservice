@@ -5,6 +5,7 @@ import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import com.spatalabz.choco.userservice.model.Customer;
 import com.spatalabz.choco.userservice.repository.CustomerRepository;
+import com.spatalabz.choco.userservice.utility.TokenUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,14 +23,16 @@ public class CustomerServiceImpl implements  CustomerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private TokenUtility tokenUtility;
+
 
     public String addingCustomer(AddCustomerDto addCustomerDto){
         this.customer=new Customer(addCustomerDto);
         Optional<Customer> customerExist=customerRepository.findByEmailAddress(addCustomerDto.emailAddress);
         if(customerExist.isPresent())
             return "Customer Already Exists!";
-        String pass=passwordEncoder.encode(this.customer.getPassword());
-        System.out.println(pass);
+        passwordEncoder.encode(this.customer.getPassword());
         customerRepository.save(this.customer);
         return "Customer Added.";
     }
@@ -41,6 +44,7 @@ public class CustomerServiceImpl implements  CustomerService {
         if(passwordEncoder.matches(authCustomerDto.password,customerExist.get().getPassword())){
             return "Password Incorrect!";
         }
+        tokenUtility.generateToken(customerExist.get().getId());
 
         return "Customer Authenticated.";
     }
@@ -53,7 +57,7 @@ public class CustomerServiceImpl implements  CustomerService {
     }
 
     public String resetPassword(ResetPasswordDto resetPasswordDto,String token){
-        String customer_Id=token;
+        String customer_Id=tokenUtility.decodeToken(token);
         Optional<Customer> customerExist=customerRepository.findById(customer_Id);
         if(!customerExist.isPresent()){
             return "Invalid Token!";
@@ -66,7 +70,7 @@ public class CustomerServiceImpl implements  CustomerService {
     }
 
     public String customerDetails(String token){
-        String customer_Id=token;
+        String customer_Id=tokenUtility.decodeToken(token);
         Optional<Customer> customerExist=customerRepository.findById(customer_Id);
         if(!customerExist.isPresent()){
             return "Invalid Token!";

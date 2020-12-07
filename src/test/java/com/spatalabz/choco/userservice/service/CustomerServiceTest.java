@@ -5,6 +5,7 @@ import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import com.spatalabz.choco.userservice.model.Customer;
 import com.spatalabz.choco.userservice.repository.CustomerRepository;
+import com.spatalabz.choco.userservice.utility.TokenUtility;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ public class CustomerServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private TokenUtility tokenUtility;
 
     @InjectMocks
     private CustomerServiceImpl customerService;
@@ -73,6 +77,7 @@ public class CustomerServiceTest {
     public void givenValidCustomer_whenAuthenticated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
         when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
+        when(tokenUtility.generateToken(any())).thenReturn("sdfsdfdsfsd");
         Assertions.assertEquals("Customer Authenticated.",this.customerService.authenticationCustomer(this.authCustomerDto));
     }
 
@@ -80,6 +85,7 @@ public class CustomerServiceTest {
     public void givenValidCustomerWrongEmail_whenAuthenticated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
         when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(null));
+        when(tokenUtility.generateToken(any())).thenReturn("sdfsdfdsfsd");
         Assertions.assertEquals("Customer doesn't Exists!",this.customerService.authenticationCustomer(this.authCustomerDto));
     }
 
@@ -106,6 +112,8 @@ public class CustomerServiceTest {
     public void givenValidCustomerResetPassword_whenUpdated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
         when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
+        when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
+
         Assertions.assertEquals("Password Updated Successfully.",this.customerService.resetPassword(this.resetPasswordDto,"token"));
 
     }
@@ -113,6 +121,8 @@ public class CustomerServiceTest {
     public void givenInValidCustomerResetPassword_whenUpdated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
         when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(null));
+        when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
+
         Assertions.assertEquals("Invalid Token!",this.customerService.resetPassword(this.resetPasswordDto,"token"));
 
     }
@@ -121,6 +131,7 @@ public class CustomerServiceTest {
         this.resetPasswordDto.confirm_password="78945612er";
         when(customerRepository.save(any())).thenReturn(this.customer);
         when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(customer));
+        when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
         Assertions.assertEquals("Passwords doesn't matches each other.",this.customerService.resetPassword(this.resetPasswordDto,"token"));
 
     }
@@ -130,13 +141,14 @@ public class CustomerServiceTest {
     @Test
     public void givenValidToken_whenGetting_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
+        when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
         when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
         Assertions.assertEquals("Customer Details",this.customerService.customerDetails("token"));
     }
 
     @Test
     public void givenInValidToken_whenGetting_shouldReturnValidResponse(){
-
+        when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
         when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(null));
         Assertions.assertEquals("Invalid Token!",this.customerService.customerDetails("token"));
     }

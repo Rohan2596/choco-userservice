@@ -3,6 +3,7 @@ package com.spatalabz.choco.userservice.service;
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
+import com.spatalabz.choco.userservice.exception.CustomerException;
 import com.spatalabz.choco.userservice.model.Customer;
 import com.spatalabz.choco.userservice.repository.CustomerRepository;
 import com.spatalabz.choco.userservice.utility.TokenUtility;
@@ -64,11 +65,16 @@ public class CustomerServiceTest {
 
     @Test
     public  void givenValidCustomerAlreadyExist_whenAdded_shouldReturnValidResponse(){
+     try {
+         when(passwordEncoder.matches(any(),any())).thenReturn(true);
+         when(customerRepository.save(any())).thenReturn(this.customer);
+         when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
+         this.customerService.addingCustomer(this.addCustomerDto);
 
-        when(passwordEncoder.matches(any(),any())).thenReturn(true);
-        when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
-        Assertions.assertEquals("Customer Already Exists!",this.customerService.addingCustomer(this.addCustomerDto));
+     }catch (CustomerException customerException){
+
+         Assertions.assertEquals("CUSTOMER_ALREADY_EXIST",customerException.exceptionTypes.name());
+     }
 
     }
 
@@ -83,10 +89,15 @@ public class CustomerServiceTest {
 
     @Test
     public void givenValidCustomerWrongEmail_whenAuthenticated_shouldReturnValidResponse(){
+     try {
         when(customerRepository.save(any())).thenReturn(this.customer);
         when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(null));
         when(tokenUtility.generateToken(any())).thenReturn("sdfsdfdsfsd");
-        Assertions.assertEquals("Customer doesn't Exists!",this.customerService.authenticationCustomer(this.authCustomerDto));
+        this.customerService.authenticationCustomer(this.authCustomerDto);
+    }catch (CustomerException customerException){
+
+        Assertions.assertEquals("CUSTOMER_DOESNOT_EXIST",customerException.exceptionTypes.name());
+     }
     }
 
 
@@ -101,9 +112,16 @@ public class CustomerServiceTest {
 
     @Test
     public void givenInValidCustomerEmailAddress_whenForgotten_shouldReturnValidResponse(){
-        when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(null));
-        Assertions.assertEquals("Customer doesn't Exists!",this.customerService.passwordForgotten(this.addCustomerDto.emailAddress));
+        try {
+
+            when(customerRepository.save(any())).thenReturn(this.customer);
+            when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(null));
+            this.customerService.passwordForgotten(this.addCustomerDto.emailAddress);
+
+        }catch (CustomerException customerException){
+
+            Assertions.assertEquals("CUSTOMER_DOESNOT_EXIST",customerException.exceptionTypes.name());
+        }
 
     }
 
@@ -119,11 +137,15 @@ public class CustomerServiceTest {
     }
     @Test
     public void givenInValidCustomerResetPassword_whenUpdated_shouldReturnValidResponse(){
-        when(customerRepository.save(any())).thenReturn(this.customer);
-        when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(null));
-        when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
+        try {
+            when(customerRepository.save(any())).thenReturn(this.customer);
+            when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(null));
+            when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
+            this.customerService.resetPassword(this.resetPasswordDto,"token");
+        }catch (CustomerException customerException){
+            Assertions.assertEquals("CUSTOMER_DOESNOT_EXIST",customerException.exceptionTypes.name());
 
-        Assertions.assertEquals("Invalid Token!",this.customerService.resetPassword(this.resetPasswordDto,"token"));
+        }
 
     }
     @Test
@@ -148,8 +170,13 @@ public class CustomerServiceTest {
 
     @Test
     public void givenInValidToken_whenGetting_shouldReturnValidResponse(){
+        try{
         when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
         when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(null));
-        Assertions.assertEquals("Invalid Token!",this.customerService.customerDetails("token"));
+        this.customerService.customerDetails("token");
+    }catch (CustomerException customerException){
+            Assertions.assertEquals("CUSTOMER_DOESNOT_EXIST",customerException.exceptionTypes.name());
+
+        }
     }
 }

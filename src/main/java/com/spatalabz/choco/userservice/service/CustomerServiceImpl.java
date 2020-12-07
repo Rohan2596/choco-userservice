@@ -3,6 +3,7 @@ package com.spatalabz.choco.userservice.service;
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
+import com.spatalabz.choco.userservice.exception.CustomerException;
 import com.spatalabz.choco.userservice.model.Customer;
 import com.spatalabz.choco.userservice.repository.CustomerRepository;
 import com.spatalabz.choco.userservice.utility.TokenUtility;
@@ -31,16 +32,17 @@ public class CustomerServiceImpl implements  CustomerService {
         this.customer=new Customer(addCustomerDto);
         Optional<Customer> customerExist=customerRepository.findByEmailAddress(addCustomerDto.emailAddress);
         if(customerExist.isPresent())
-            return "Customer Already Exists!";
+            throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_ALREADY_EXIST);
         passwordEncoder.encode(this.customer.getPassword());
         customerRepository.save(this.customer);
         return "Customer Added.";
     }
 
-    public String authenticationCustomer(AuthCustomerDto authCustomerDto){
+    public String authenticationCustomer(AuthCustomerDto authCustomerDto)  {
         Optional<Customer> customerExist=customerRepository.findByEmailAddress(authCustomerDto.emailAddress);
         if(!customerExist.isPresent())
-            return "Customer doesn't Exists!";
+            throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
+
         if(passwordEncoder.matches(authCustomerDto.password,customerExist.get().getPassword())){
             return "Password Incorrect!";
         }
@@ -52,7 +54,7 @@ public class CustomerServiceImpl implements  CustomerService {
     public String passwordForgotten(String emailId){
         Optional<Customer> customerExist=customerRepository.findByEmailAddress(emailId);
         if(!customerExist.isPresent())
-            return "Customer doesn't Exists!";
+            throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
         return "Reset link is send to registered Email Address.";
     }
 
@@ -60,7 +62,7 @@ public class CustomerServiceImpl implements  CustomerService {
         String customer_Id=tokenUtility.decodeToken(token);
         Optional<Customer> customerExist=customerRepository.findById(customer_Id);
         if(!customerExist.isPresent()){
-            return "Invalid Token!";
+            throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
         }
         if(resetPasswordDto.confirm_password!=resetPasswordDto.password){
            return "Passwords doesn't matches each other.";
@@ -73,7 +75,7 @@ public class CustomerServiceImpl implements  CustomerService {
         String customer_Id=tokenUtility.decodeToken(token);
         Optional<Customer> customerExist=customerRepository.findById(customer_Id);
         if(!customerExist.isPresent()){
-            return "Invalid Token!";
+            throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
         }
         return "Customer Details";
     }

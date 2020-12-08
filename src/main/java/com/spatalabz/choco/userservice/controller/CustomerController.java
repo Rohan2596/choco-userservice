@@ -1,14 +1,10 @@
 package com.spatalabz.choco.userservice.controller;
 
-import com.spatalabz.choco.userservice.dto.AddCustomerDto;
-import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
-import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
+import com.spatalabz.choco.userservice.dto.*;
 import com.spatalabz.choco.userservice.response.CustomerResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

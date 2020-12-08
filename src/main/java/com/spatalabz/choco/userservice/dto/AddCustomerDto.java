@@ -18,18 +18,18 @@ public class AddCustomerDto {
 
     @NotNull(message = "First Name Length must between 3 to 10 characters!")
     @Pattern(message = "Please Enter Valid  First Name!",
-    regexp = "^[a-zA-Z0-9]{3,10}$")
+    regexp = "^[a-zA-Z]{3,10}$")
     public String firstName;
 
     @NotNull(message = "Last Name Length must between 3 to 10 characters!")
     @Pattern(message = "Please Enter Valid Last Name!",
-            regexp = "^[a-zA-Z0-9]{3,10}$")
+            regexp = "^[a-zA-Z]{3,10}$")
     public String lastName;
 
 
     @NotNull(message = "Password Length must between 6 to 10 characters!")
     @Pattern(message = "Please Enter Valid  Password!",
-            regexp = "^[a-zA-Z0-9]{6,10}$")
+            regexp = "^[a-zA-Z0-9*#$%]{6,10}$")
     public String password;
 
     @NotNull(message = "Customer Type can not be null!")

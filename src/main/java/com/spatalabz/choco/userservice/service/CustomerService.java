@@ -4,6 +4,7 @@ import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import com.spatalabz.choco.userservice.exception.CustomerException;
+import com.spatalabz.choco.userservice.model.Customer;
 
 public interface CustomerService {
 
@@ -11,5 +12,5 @@ public interface CustomerService {
     String authenticationCustomer(AuthCustomerDto authCustomerDto) throws CustomerException;
     String passwordForgotten(String emailId);
     String resetPassword(ResetPasswordDto resetPasswordDto,String token);
-    String customerDetails(String token);
+    Customer customerDetails(String token);
 }

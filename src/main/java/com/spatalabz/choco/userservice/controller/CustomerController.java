@@ -1,7 +1,10 @@
 package com.spatalabz.choco.userservice.controller;
 
 import com.spatalabz.choco.userservice.dto.*;
+import com.spatalabz.choco.userservice.exception.CustomerException;
 import com.spatalabz.choco.userservice.response.CustomerResponse;
+import com.spatalabz.choco.userservice.service.CustomerServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +16,17 @@ import java.util.regex.Pattern;
 @RequestMapping("/choco/customer/user")
 public class CustomerController {
 
+    @Autowired
+    CustomerServiceImpl customerServiceImpl;
+
     @PostMapping
-    public ResponseEntity<CustomerResponse> addCustomer(@RequestBody @Valid AddCustomerDto addCustomerDto, BindingResult bindingResult) {
+    public ResponseEntity<CustomerResponse> addCustomer(@RequestBody @Valid AddCustomerDto addCustomerDto, BindingResult bindingResult) throws CustomerException {
         if(bindingResult.hasErrors()){
             return new ResponseEntity<>(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),addCustomerDto.emailAddress), HttpStatus.BAD_REQUEST);
 
         }
-        return new ResponseEntity<>(new CustomerResponse("User Added.",addCustomerDto),HttpStatus.CREATED);
+
+        return new ResponseEntity<>(new CustomerResponse("Customer Added.",customerServiceImpl.addingCustomer(addCustomerDto)),HttpStatus.CREATED);
     }
 
     @PostMapping("/auth")
@@ -27,7 +34,7 @@ public class CustomerController {
         if(bindingResult.hasErrors()){
             return new ResponseEntity<>(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),authCustomerDto.emailAddress), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new CustomerResponse("User Authenticated.",authCustomerDto.emailAddress),HttpStatus.OK);
+        return new ResponseEntity<>(new CustomerResponse("Customer Authenticated.",customerServiceImpl.authenticationCustomer(authCustomerDto)),HttpStatus.OK);
 
     }
 
@@ -40,22 +47,22 @@ public class CustomerController {
             return new ResponseEntity<>(new CustomerResponse("Please Enter correct Email Address!",emailId), HttpStatus.BAD_REQUEST);
 
         }
-        return new ResponseEntity<>(new CustomerResponse("Customer Password forgotten.",emailId), HttpStatus.OK);
+        return new ResponseEntity<>(new CustomerResponse("Customer Password forgotten.",customerServiceImpl.passwordForgotten(emailId)), HttpStatus.OK);
     }
 
     @PostMapping("/reset")
-    public ResponseEntity<CustomerResponse> resetPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto, BindingResult bindingResult){
+    public ResponseEntity<CustomerResponse> resetPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,BindingResult bindingResult,@RequestParam String token){
         if(bindingResult.hasErrors()){
             return new ResponseEntity<>(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),resetPasswordDto.password), HttpStatus.BAD_REQUEST);
 
         }
-        return new ResponseEntity<>(new CustomerResponse("Password Updated  Successfully.",""), HttpStatus.OK);
+        return new ResponseEntity<>(new CustomerResponse("Password Updated  Successfully.",customerServiceImpl.resetPassword(resetPasswordDto,token)), HttpStatus.OK);
 
     }
 
     @GetMapping("/{token}")
     public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable String token){
-        return new ResponseEntity<>(new CustomerResponse("Getting Customer Details.", token), HttpStatus.OK);
+        return new ResponseEntity<>(new CustomerResponse("Getting Customer Details.", customerServiceImpl.customerDetails(token)), HttpStatus.OK);
     }
 
 }

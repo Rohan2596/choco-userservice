@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements  CustomerService {
 
-    private Customer customer;
+
 
     @Autowired
     private  CustomerRepository customerRepository;
@@ -28,13 +28,13 @@ public class CustomerServiceImpl implements  CustomerService {
     private TokenUtility tokenUtility;
 
 
-    public String addingCustomer(AddCustomerDto addCustomerDto){
-        this.customer=new Customer(addCustomerDto);
+    public String addingCustomer(AddCustomerDto addCustomerDto) throws CustomerException{
+         Customer customer=new Customer(addCustomerDto);
         Optional<Customer> customerExist=customerRepository.findByEmailAddress(addCustomerDto.emailAddress);
         if(customerExist.isPresent())
             throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_ALREADY_EXIST);
-        passwordEncoder.encode(this.customer.getPassword());
-        customerRepository.save(this.customer);
+          customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customerRepository.save(customer);
         return "Customer Added.";
     }
 
@@ -42,13 +42,12 @@ public class CustomerServiceImpl implements  CustomerService {
         Optional<Customer> customerExist=customerRepository.findByEmailAddress(authCustomerDto.emailAddress);
         if(!customerExist.isPresent())
             throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
-
-        if(passwordEncoder.matches(authCustomerDto.password,customerExist.get().getPassword())){
+        boolean passwordCheck=passwordEncoder.matches(authCustomerDto.password,customerExist.get().getPassword());
+        if(!passwordCheck){
             return "Password Incorrect!";
         }
-        tokenUtility.generateToken(customerExist.get().getId());
+       return tokenUtility.generateToken(customerExist.get().get_id());
 
-        return "Customer Authenticated.";
     }
 
     public String passwordForgotten(String emailId){
@@ -59,25 +58,31 @@ public class CustomerServiceImpl implements  CustomerService {
     }
 
     public String resetPassword(ResetPasswordDto resetPasswordDto,String token){
-        String customer_Id=tokenUtility.decodeToken(token);
-        Optional<Customer> customerExist=customerRepository.findById(customer_Id);
-        if(!customerExist.isPresent()){
-            throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
-        }
         if(!resetPasswordDto.confirm_password.equals(resetPasswordDto.password)){
-           return "Passwords doesn't matches each other.";
+            return "Passwords doesn't matches each other.";
         }
-        customerExist.get().setPassword(resetPasswordDto.password);
+
+        String customer_Id=tokenUtility.decodeToken(token);
+        Customer customer=customerRepository.findById(customer_Id)
+                .orElseThrow(
+                        ()->new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST)
+                );
+
+
+        customer.setPassword(passwordEncoder.encode(resetPasswordDto.password));
+        customer.setFirstName("QWERTY");
+//for error keeping id name same equals _id
+        customerRepository.save(customer);
         return "Password Updated Successfully.";
     }
 
-    public String customerDetails(String token){
+    public Customer customerDetails(String token){
         String customer_Id=tokenUtility.decodeToken(token);
-        Optional<Customer> customerExist=customerRepository.findById(customer_Id);
-        if(!customerExist.isPresent()){
-            throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
-        }
-        return "Customer Details";
+        Customer customer=customerRepository.findById(customer_Id)
+                .orElseThrow(
+                        ()->new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST)
+                );
+        return customer;
     }
 
 }

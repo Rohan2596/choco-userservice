@@ -5,12 +5,14 @@ import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
 import com.spatalabz.choco.userservice.response.CustomerResponse;
+import com.spatalabz.choco.userservice.service.CustomerServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -32,6 +34,9 @@ public class CustomerControllerTest {
      @Autowired
      private MockMvc mockMvc;
 
+     @MockBean
+     CustomerServiceImpl customerService;
+
     @BeforeEach
     void setUp() {
         this.customerController=new CustomerController();
@@ -47,7 +52,7 @@ public class CustomerControllerTest {
                 .content(new Gson().toJson(this.addCustomerDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
-        Assertions.assertEquals("User Added.",customerResponse.getMessage());
+        Assertions.assertEquals("Customer Added.",customerResponse.getMessage());
         Assertions.assertEquals(201,mvcResult.getResponse().getStatus());
 
     }
@@ -347,7 +352,7 @@ public class CustomerControllerTest {
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
-        Assertions.assertEquals("User Authenticated.",customerResponse.getMessage());
+        Assertions.assertEquals("Customer Authenticated.",customerResponse.getMessage());
         Assertions.assertEquals(200,mvcResult.getResponse().getStatus());
 
     }
@@ -509,6 +514,7 @@ public class CustomerControllerTest {
 
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -524,6 +530,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.password=null;
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -534,8 +541,9 @@ public class CustomerControllerTest {
     @Test
     void givenInValidCustomer_reset_password_empty_whenUpdated_shouldReturnValidResponse() throws Exception {
         this.resetPasswordDto.password="";
-        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
+        MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/Customer/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -548,6 +556,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.password="rohankadamasd.com";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -561,6 +570,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.password="rohankada@masd";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -573,6 +583,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.password="ro";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn(); CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
         Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
@@ -587,6 +598,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.confirm_password=null;
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -600,6 +612,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.confirm_password="";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -613,6 +626,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.confirm_password="rohankadamasd.com";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -627,6 +641,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.confirm_password="rohankada@masd";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
@@ -640,6 +655,7 @@ public class CustomerControllerTest {
         this.resetPasswordDto.confirm_password="ro";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("token","token")
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
         CustomerResponse customerResponse = new Gson()
                 .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);

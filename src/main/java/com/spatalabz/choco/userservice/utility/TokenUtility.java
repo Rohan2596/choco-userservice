@@ -32,7 +32,7 @@ public class TokenUtility {
         String token = JWT.create()
                 .withClaim("customer_Id", customer_id)
                 //token active for 5 minutes
-                .withExpiresAt(Date.from(Instant.now().plusSeconds(30000)))
+                .withExpiresAt(Date.from(Instant.now().plusSeconds(300000)))
                 .sign(algorithm);
 
         return token;

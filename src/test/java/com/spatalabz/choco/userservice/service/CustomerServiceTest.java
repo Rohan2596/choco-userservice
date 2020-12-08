@@ -48,7 +48,7 @@ public class CustomerServiceTest {
         this.authCustomerDto=new AuthCustomerDto("rohankadam965@gmail.com","7894561230");
         this.resetPasswordDto=new ResetPasswordDto("78945612we","78945612we");
          this.customer=new Customer(this.addCustomerDto);
-         this.customer.setId("dsfs");
+         this.customer.setCustomer_Id("dsfs");
 
     }
 
@@ -82,9 +82,10 @@ public class CustomerServiceTest {
     @Test
     public void givenValidCustomer_whenAuthenticated_shouldReturnValidResponse(){
         when(customerRepository.save(any())).thenReturn(this.customer);
+        when(passwordEncoder.matches(any(),any())).thenReturn(true);
         when(customerRepository.findByEmailAddress(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
-        when(tokenUtility.generateToken(any())).thenReturn("sdfsdfdsfsd");
-        Assertions.assertEquals("Customer Authenticated.",this.customerService.authenticationCustomer(this.authCustomerDto));
+        when(tokenUtility.generateToken(any())).thenReturn("token");
+        Assertions.assertEquals("token",this.customerService.authenticationCustomer(this.authCustomerDto));
     }
 
     @Test
@@ -165,7 +166,7 @@ public class CustomerServiceTest {
         when(customerRepository.save(any())).thenReturn(this.customer);
         when(tokenUtility.decodeToken(any())).thenReturn("sdfsdfdsfsd");
         when(customerRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(this.customer));
-        Assertions.assertEquals("Customer Details",this.customerService.customerDetails("token"));
+        Assertions.assertEquals("Rohan",this.customerService.customerDetails("token").getFirstName());
     }
 
     @Test

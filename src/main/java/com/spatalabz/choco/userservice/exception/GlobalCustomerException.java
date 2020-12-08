@@ -11,8 +11,8 @@ public class GlobalCustomerException {
 
     @ExceptionHandler(CustomerException.class)
     public ResponseEntity<CustomerResponse> handleUserException(CustomerException customerException){
-        return new ResponseEntity<CustomerResponse>
-                (new CustomerResponse(customerException.exceptionTypes.message,customerException.exceptionTypes),
+        return new ResponseEntity<>
+                (new CustomerResponse(customerException.exceptionTypes.message, customerException.exceptionTypes),
                         HttpStatus.BAD_REQUEST);
     }
 }

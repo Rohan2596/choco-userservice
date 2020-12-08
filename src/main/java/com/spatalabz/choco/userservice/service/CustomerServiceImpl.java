@@ -64,7 +64,7 @@ public class CustomerServiceImpl implements  CustomerService {
         if(!customerExist.isPresent()){
             throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_DOESNOT_EXIST);
         }
-        if(resetPasswordDto.confirm_password!=resetPasswordDto.password){
+        if(!resetPasswordDto.confirm_password.equals(resetPasswordDto.password)){
            return "Passwords doesn't matches each other.";
         }
         customerExist.get().setPassword(resetPasswordDto.password);

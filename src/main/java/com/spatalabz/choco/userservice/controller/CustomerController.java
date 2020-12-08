@@ -3,6 +3,9 @@ package com.spatalabz.choco.userservice.controller;
 import com.spatalabz.choco.userservice.dto.AddCustomerDto;
 import com.spatalabz.choco.userservice.dto.AuthCustomerDto;
 import com.spatalabz.choco.userservice.dto.ResetPasswordDto;
+import com.spatalabz.choco.userservice.response.CustomerResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +18,12 @@ import java.util.regex.Pattern;
 public class CustomerController {
 
     @PostMapping
-    public String addCustomer(@RequestBody @Valid AddCustomerDto addCustomerDto, BindingResult bindingResult) {
+    public ResponseEntity<CustomerResponse> addCustomer(@RequestBody @Valid AddCustomerDto addCustomerDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),addCustomerDto), HttpStatus.BAD_REQUEST);
+
         }
-        return "User Added.";
+        return new ResponseEntity(new CustomerResponse("User Added.",addCustomerDto),HttpStatus.CREATED);
     }
 
     @PostMapping("/auth")

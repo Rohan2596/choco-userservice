@@ -345,7 +345,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("User Authenticated.",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals("User Authenticated.",customerResponse.getMessage());
+        Assertions.assertEquals(200,mvcResult.getResponse().getStatus());
 
     }
 
@@ -356,7 +359,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Email Address Cannot be empty/blank/null!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Email Address Cannot be empty/blank/null!",customerResponse.getMessage());
 
     }
     @Test
@@ -365,7 +371,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid Email Address!",customerResponse.getMessage());
 
     }
     @Test
@@ -374,7 +383,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+
+        Assertions.assertEquals("Please Enter Valid Email Address!",customerResponse.getMessage());
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
 
     }
 
@@ -384,7 +397,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid Email Address!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+
+        Assertions.assertEquals("Please Enter Valid Email Address!",customerResponse.getMessage());
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
 
     }
 
@@ -395,7 +412,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+
+        Assertions.assertEquals("Password Length must between 6 to 10 characters!",customerResponse.getMessage());
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
 
     }
     @Test
@@ -404,7 +425,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
 
     }
     @Test
@@ -413,7 +438,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
 
@@ -423,7 +451,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
     @Test
@@ -432,7 +463,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/auth")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.authCustomerDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
 
@@ -444,7 +478,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(get("/choco/customer/user/forgot")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .param("emailId","rohankadam965@gmail.com")).andReturn();
-        Assertions.assertEquals("Customer Password forgotten.",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+
+        Assertions.assertEquals("Customer Password forgotten.",customerResponse.getMessage());
+        Assertions.assertEquals(200,mvcResult.getResponse().getStatus());
 
     }
 
@@ -454,7 +492,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(get("/choco/customer/user/forgot")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .param("emailId","rohankadam965gmail.com")).andReturn();
-        Assertions.assertEquals("Please Enter correct Email Address!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals("Please Enter correct Email Address!",customerResponse.getMessage());
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
 
     }
 
@@ -469,7 +510,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Password Updated  Successfully.",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+
+        Assertions.assertEquals("Password Updated  Successfully.",customerResponse.getMessage());
 
     }
 
@@ -481,7 +525,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Password Length must between 6 to 10 characters!",customerResponse.getMessage());
 
     }
     @Test
@@ -490,7 +537,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
     @Test
@@ -499,7 +549,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
 
@@ -509,7 +562,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
     @Test
@@ -517,8 +573,10 @@ public class CustomerControllerTest {
         this.resetPasswordDto.password="ro";
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+                .content(new Gson().toJson(this.resetPasswordDto))).andReturn(); CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
 
@@ -530,7 +588,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Password Length must between 6 to 10 characters!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+
+        Assertions.assertEquals("Password Length must between 6 to 10 characters!",customerResponse.getMessage());
 
     }
     @Test
@@ -539,7 +601,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
     @Test
@@ -548,7 +614,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
 
@@ -558,7 +628,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
     @Test
@@ -567,7 +641,11 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(post("/choco/customer/user/reset")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new Gson().toJson(this.resetPasswordDto))).andReturn();
-        Assertions.assertEquals("Please Enter Valid  Password!",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        Assertions.assertEquals(400,mvcResult.getResponse().getStatus());
+
+        Assertions.assertEquals("Please Enter Valid  Password!",customerResponse.getMessage());
 
     }
 
@@ -579,7 +657,10 @@ public class CustomerControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(get("/choco/customer/user/dsfsdfds")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 ).andReturn();
-        Assertions.assertEquals("Getting Customer Details",mvcResult.getResponse().getContentAsString());
+        CustomerResponse customerResponse = new Gson()
+                .fromJson(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+
+        Assertions.assertEquals("Getting Customer Details.",customerResponse.getMessage());
 
     }
 

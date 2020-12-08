@@ -20,43 +20,46 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<CustomerResponse> addCustomer(@RequestBody @Valid AddCustomerDto addCustomerDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return new ResponseEntity(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),addCustomerDto), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),addCustomerDto.emailAddress), HttpStatus.BAD_REQUEST);
 
         }
         return new ResponseEntity(new CustomerResponse("User Added.",addCustomerDto),HttpStatus.CREATED);
     }
 
     @PostMapping("/auth")
-    public String authenticatingCustomer(@RequestBody @Valid AuthCustomerDto authCustomerDto,BindingResult bindingResult){
+    public ResponseEntity<CustomerResponse> authenticatingCustomer(@RequestBody @Valid AuthCustomerDto authCustomerDto,BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),authCustomerDto.emailAddress), HttpStatus.BAD_REQUEST);
         }
-        return "User Authenticated.";
+        return new ResponseEntity(new CustomerResponse("User Authenticated.",authCustomerDto.emailAddress),HttpStatus.OK);
+
     }
 
     @GetMapping("/forgot")
-    public String forgotPassword(@RequestParam String emailId){
+    public ResponseEntity<CustomerResponse> forgotPassword(@RequestParam String emailId){
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+[a-zA-Z0-9.-]*+$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(emailId);
         boolean matchFound = matcher.find();
         if(!matchFound) {
-            return "Please Enter correct Email Address!";
+            return new ResponseEntity(new CustomerResponse("Please Enter correct Email Address!",emailId), HttpStatus.BAD_REQUEST);
+
         }
-        return "Customer Password forgotten.";
+        return new ResponseEntity(new CustomerResponse("Customer Password forgotten.",emailId), HttpStatus.OK);
     }
 
     @PostMapping("/reset")
-    public String resetPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,BindingResult bindingResult){
+    public ResponseEntity<CustomerResponse> resetPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new ResponseEntity(new CustomerResponse(bindingResult.getAllErrors().get(0).getDefaultMessage(),"zxc"), HttpStatus.BAD_REQUEST);
+
         }
-        return "Password Updated  Successfully.";
+        return new ResponseEntity(new CustomerResponse("Password Updated  Successfully.",""), HttpStatus.OK);
+
     }
 
     @GetMapping("/{token}")
-    public String getCustomerDetails(@PathVariable String token){
-        System.out.println(token);
-        return "Getting Customer Details";
+    public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable String token){
+     return new ResponseEntity(new CustomerResponse("Getting Customer Details.",""), HttpStatus.OK);
     }
 
 }

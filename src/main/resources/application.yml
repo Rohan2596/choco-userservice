@@ -1,0 +1,5 @@
+spring:
+  profiles:local
+spring.data.mongodb:
+  database: got # Database name.
+  uri: mongodb://localhost:27017 # Mongo database URI. Cannot be set with host, port and credentials.

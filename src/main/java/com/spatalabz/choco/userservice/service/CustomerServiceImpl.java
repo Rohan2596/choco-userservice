@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements  CustomerService {
         Optional<Customer> customerExist=customerRepository.findByEmailAddress(addCustomerDto.emailAddress);
         if(customerExist.isPresent())
             throw  new CustomerException( CustomerException.ExceptionTypes.CUSTOMER_ALREADY_EXIST);
-          customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customerRepository.save(customer);
         return "Customer Added.";
     }
